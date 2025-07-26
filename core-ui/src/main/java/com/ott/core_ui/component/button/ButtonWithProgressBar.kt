@@ -18,11 +18,11 @@ import com.ott.core_ui.util.UiText
 @Composable
 fun ButtonWithProgressBar(
     text: UiText,
-    icon: UiImage?=null,
+    icon: UiImage? = null,
     isLoading: Boolean = false,
     modifier: Modifier = Modifier.fillMaxWidth(),
-    containerColor: Color = MaterialTheme.colorScheme.primary,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
+    containerColor: Color = MaterialTheme.colorScheme.tertiary,
+    contentColor: Color = MaterialTheme.colorScheme.onTertiary,
     onButtClicked: () -> Unit = {}
 ) {
     Button(
@@ -44,8 +44,7 @@ fun ButtonWithProgressBar(
             )
         } else Body(
             text = text,
-            icon=icon,
-            textStyle = MaterialTheme.typography.bodyMedium,
+            icon = icon,
             fontColor = contentColor
         )
     }
