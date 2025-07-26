@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "ott"
 include(":app")
- 
+include(":core-ui")
+include(":core-network")
+include(":core")

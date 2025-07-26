@@ -27,6 +27,21 @@ android {
             )
         }
     }
+
+    flavorDimensions += listOf("test")
+    productFlavors {
+        create("dev") {
+            dimension = "test"
+            versionNameSuffix = "-Dev"
+            applicationIdSuffix = ".dev"
+            buildConfigField("String", "APP_DOMAIN", "\"www.episodate.com\"")
+        }
+        create("prod") {
+            dimension = "test"
+            buildConfigField("String", "APP_DOMAIN", "\"www.episodate.com\"")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -36,10 +51,15 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
+
+    //modules
+    implementation(project(":core-ui"))
+    implementation(project(":core-network"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -49,6 +69,24 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    //navigation
+    //implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+
+
+    implementation(libs.coil.compose)
+
+    //koin
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx)
+
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
