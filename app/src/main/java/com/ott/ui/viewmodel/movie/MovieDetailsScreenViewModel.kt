@@ -12,17 +12,22 @@ import com.ott.ui.UiState
 import kotlinx.coroutines.launch
 
 class MovieDetailsScreenViewModel(
+    private val movieId: Int,
     private val movieDetailsUseCase: GetMovieDetailsUseCase
 ) : BaseViewModel<UiState>(UiState.None) {
 
 
+    init {
+        onAction(MovieDetailsScreenIntent.GetDetails)
+    }
+
     fun onAction(intent: MovieDetailsScreenIntent) {
         when (intent) {
             is MovieDetailsScreenIntent.GetDetails -> {
-                getMovieDetails(intent.movieId)
+                getMovieDetails(movieId)
             }
             is MovieDetailsScreenIntent.Refresh -> {
-                getMovieDetails(intent.movieId)
+                getMovieDetails(movieId)
             }
         }
     }
@@ -45,6 +50,6 @@ class MovieDetailsScreenViewModel(
 }
 
 sealed class MovieDetailsScreenIntent {
-    data class GetDetails(val movieId: Int) : MovieDetailsScreenIntent()
-    data class Refresh(val movieId: Int) : MovieDetailsScreenIntent()
+    object GetDetails : MovieDetailsScreenIntent()
+    object Refresh : MovieDetailsScreenIntent()
 }

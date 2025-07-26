@@ -19,13 +19,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.common.ui.components.state.ActionStateView
 import com.ott.core_ui.component.AppContainer
 import com.ott.core_ui.component.actionbar.DefaultNavigationIcon
@@ -40,27 +39,26 @@ import com.ott.core_ui.util.UiText
 import com.ott.model.movie.data.domain.model.Movie
 import com.ott.ui.UiState
 import com.ott.ui.viewmodel.movie.MovieDetailsScreenIntent
+import com.ott.ui.viewmodel.movie.MovieDetailsScreenViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailsScreen(
-    movieId: Int,
-    uiState: State<UiState>,
-    event: (intent: MovieDetailsScreenIntent) -> Unit
+    viewModel: MovieDetailsScreenViewModel = koinViewModel(),
+    exit: () -> Unit
 ) {
+
+    val uiState = viewModel.uiState().collectAsStateWithLifecycle()
 
     val isFavourite = remember {
         mutableStateOf(false)
     }
 
-    LaunchedEffect(Unit) {
-        event(MovieDetailsScreenIntent.GetDetails(movieId))
-    }
-
     AppContainer(
         navigation = {
             DefaultNavigationIcon {
-              //  navHostController.popBackStack()
+                exit.invoke()
             }
         },
         toolbarActions = {
@@ -98,7 +96,7 @@ fun MovieDetailsScreen(
                         ),
                         isActionRequired = true
                     ) {
-                        event(MovieDetailsScreenIntent.Refresh(movieId))
+                        viewModel.onAction(MovieDetailsScreenIntent.Refresh)
                     }
                 }
 
@@ -120,14 +118,13 @@ fun MovieDetailsSection(movie: Movie) {
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .verticalScroll(state = scrollState)
+                    .verticalScroll(state = scrollState),
+                verticalArrangement = Arrangement.spacedBy(OttTheme.Dimens.sm)
             ) {
                 //image gallery
                 pictures?.let {
                     ImageSlider(it)
                 }
-
-                Spacer(modifier = Modifier.size(OttTheme.Dimens.sm))
 
                 Title(
                     text = UiText.PlainString(name),
@@ -147,25 +144,24 @@ fun MovieDetailsSection(movie: Movie) {
                     )
                 }
 
-                Spacer(modifier = Modifier.size(OttTheme.Dimens.sm))
-
-                ButtonWithProgressBar(
-                    text = UiText.PlainString("Play"),
-                )
-
-                Spacer(modifier = Modifier.size(OttTheme.Dimens.xs))
-
-                ButtonWithProgressBar(
-                    text = UiText.PlainString(
-                        "Download"
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(OttTheme.Dimens.sm),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ButtonWithProgressBar(
+                        modifier = Modifier.weight(1f),
+                        text = UiText.PlainString("Play"),
                     )
-                )
+                    ButtonWithProgressBar(
+                        modifier = Modifier.weight(1f),
+                        text = UiText.PlainString(
+                            "Download"
+                        )
+                    )
+                }
 
-                Spacer(modifier = Modifier.size(OttTheme.Dimens.sm))
-
-                Body(
-                    text = UiText.PlainString(description ?: "No description available"),
-                )
+                Body(text = UiText.PlainString(description ?: "No description available"))
 
             }
         }

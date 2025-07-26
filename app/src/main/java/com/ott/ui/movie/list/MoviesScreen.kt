@@ -30,7 +30,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MoviesScreen(
     viewModel: MoviesScreenViewModel = koinViewModel(),
-    event: (intent: MoviesScreenIntent) -> Unit
+    showDetails : (id:Int) -> Unit ={}
 ) {
 
     val uiState: State<UiState> = viewModel.uiState().collectAsStateWithLifecycle()
@@ -56,8 +56,8 @@ fun MoviesScreen(
 
                 is UiState.Success<*> -> {
                     val state = uiState.value.asSuccess<List<Movie>>()
-                    MoviesList(state.data) { intent ->
-                        event(intent)
+                    MoviesList(state.data) { movieId ->
+                        showDetails(movieId)
                     }
                 }
 
@@ -68,7 +68,7 @@ fun MoviesScreen(
                         ),
                         isActionRequired = true
                     ) {
-                        event(MoviesScreenIntent.Refresh)
+                        viewModel.onAction(MoviesScreenIntent.Refresh)
                     }
                 }
 
@@ -85,7 +85,7 @@ fun MoviesScreen(
 fun MoviesList(
     data: List<Movie>,
     modifier: Modifier = Modifier,
-    event: (intent: MoviesScreenIntent) -> Unit
+    onMovieItemClick: (id: Int) -> Unit
 ) {
 
     val dataElements = remember {
@@ -97,7 +97,7 @@ fun MoviesList(
         modifier = modifier.testTag("MoviesList")
     ) { _, movie ->
         MovieCard(movie = movie) {
-            event(MoviesScreenIntent.ViewDetails(it))
+            onMovieItemClick(movie.id)
         }
     }
 }
