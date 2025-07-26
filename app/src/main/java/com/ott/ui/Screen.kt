@@ -7,7 +7,5 @@ sealed interface Screen : NavKey{
     @Serializable
     data object MovieList : Screen
     @Serializable
-    data object MovieDetails : Screen{
-        fun createRoute(movieId:Int) = "MovieDetails/$movieId"
-    }
+    data class MovieDetails(val movieId: Int) : Screen
 }

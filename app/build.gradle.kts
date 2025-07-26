@@ -74,6 +74,7 @@ dependencies {
     //implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.viewmodel)
 
 
     implementation(libs.coil.compose)
