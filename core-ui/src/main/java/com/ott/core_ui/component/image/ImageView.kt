@@ -16,8 +16,8 @@ import coil.request.ImageRequest
 @Composable
 fun ImageView(
     url: String,
-    contentDescription: String = "Image View",
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    contentDescription: String = "Image View"
 ) {
     val context = LocalContext.current
     SubcomposeAsyncImage(

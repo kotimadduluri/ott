@@ -16,7 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ott.model.movie.data.domain.model.Movie
 import com.ott.core_ui.component.list.VerticalList
 import com.ott.core_ui.component.state.ActionState
-import com.common.ui.components.state.ActionStateView
+import com.ott.core_ui.component.state.ActionStateView
 import com.ott.core_ui.component.AppContainer
 import com.ott.core_ui.component.state.ActionStateViewCard
 import com.ott.core_ui.util.UiText

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.common.ui.components.state.ActionStateView
 import com.common.util.UiImage
 import com.ott.core_ui.R
 import com.ott.core_ui.component.card.CardView

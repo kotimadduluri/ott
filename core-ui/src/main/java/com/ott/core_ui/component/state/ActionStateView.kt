@@ -1,9 +1,8 @@
-package com.common.ui.components.state
+package com.ott.core_ui.component.state
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ott.core_ui.component.button.SimpleButton
-import com.ott.core_ui.component.state.ActionState
 import com.ott.core_ui.component.text.Body
 import com.ott.core_ui.theme.OttTheme
 
@@ -27,13 +25,13 @@ fun ActionStateView(
     action: ActionState,
     modifier: Modifier = Modifier
         .fillMaxSize()
-        .padding(16.dp),
+        .padding(OttTheme.Dimens.md),
     block: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.testTag("ActionStateView"),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(OttTheme.Dimens.sm)
     ) {
         Image(
             painter = action.icon.asPainter(), // Replace with your error image resource
@@ -41,15 +39,12 @@ fun ActionStateView(
             contentScale = ContentScale.Crop,
             modifier = Modifier.size(120.dp)
         )
-        Spacer(modifier = Modifier.size(OttTheme.Dimens.sm))
 
         Body(
             text = action.message,
             fontColor = MaterialTheme.colorScheme.onBackground,
             textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onError, fontSize = 20.sp)
         )
-
-        Spacer(modifier = Modifier.size(OttTheme.Dimens.sm))
 
         if (isActionRequired) {
             SimpleButton(action.title) {

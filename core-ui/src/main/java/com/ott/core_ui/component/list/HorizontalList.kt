@@ -1,25 +1,24 @@
-package com.common.ui.components.list
+package com.ott.core_ui.component.list
 
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
+import com.ott.core_ui.theme.OttTheme
 
 @Composable
 fun <T> HorizontalList(
     data: List<T>,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp),
+    modifier: Modifier = Modifier.padding(OttTheme.Dimens.sm),
+    arrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(OttTheme.Dimens.sm),
     content: @Composable (index: Int, T) -> Unit
 ) {
     LazyRow(
-        modifier = modifier
-            .testTag("HorizontalList")
+        modifier = modifier.testTag("HorizontalList"),
+        horizontalArrangement = arrangement,
     ) {
         itemsIndexed(data) { index, item ->
             content(index, item)

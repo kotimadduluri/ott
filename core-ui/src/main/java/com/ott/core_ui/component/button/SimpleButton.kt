@@ -16,8 +16,8 @@ fun SimpleButton(
     text: UiText,
     icon:UiImage?=null,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.primary,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
+    containerColor: Color = MaterialTheme.colorScheme.tertiary,
+    contentColor: Color = MaterialTheme.colorScheme.onTertiary,
     onButtClicked: () -> Unit = {}
 ) {
     Button(
