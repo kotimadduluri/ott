@@ -42,14 +42,10 @@ class MovieDetailsViewModel(
     }
 
     fun getMovieDetails(movieId: Int) {
-        emitData(UiState.Loading)
         viewModelScope.launch {
+            emitData(UiState.Loading)
             val response = movieDetailsUseCase(movieId)
             when (response) {
-                is Resource.Loading -> {
-                    emitData(UiState.Loading)
-                }
-
                 is Resource.Error -> {
                     emitData(UiState.Error(response.message))
                 }

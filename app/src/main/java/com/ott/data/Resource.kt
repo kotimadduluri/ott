@@ -14,7 +14,6 @@ sealed class Resource<out T> {
         val throwable: Throwable? = null
     ) : Resource<Nothing>()
 
-    object Loading : Resource<Nothing>()
 }
 
 fun <T> Resource<T>.asSuccess(): Resource.Success<T> {

@@ -27,7 +27,6 @@ internal fun TvShow.toMovie(): Movie {
         pictures = pictures,
         rating = rating,
         ratingCount = ratingCount,
-        runtime = runtime,
         startDate = startDate,
         status = status,
         network = network,

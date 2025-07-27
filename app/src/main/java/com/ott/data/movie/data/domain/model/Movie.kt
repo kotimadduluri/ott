@@ -15,7 +15,6 @@ data class Movie(
     val pictures: List<String>?,
     val rating: String?,
     val ratingCount: String?,
-    val runtime: Int,
     val startDate: String,
     val status: String,
     val url: String? = null,

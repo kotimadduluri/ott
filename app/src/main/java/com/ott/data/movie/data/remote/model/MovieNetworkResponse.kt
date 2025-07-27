@@ -14,8 +14,6 @@ data class MoviesResponse(
 )
 
 data class TvShow(
-    @SerializedName("countdown")
-    val countdown: Any?,
     @SerializedName("country")
     val country: String,
     @SerializedName("description")
@@ -42,8 +40,6 @@ data class TvShow(
     val rating: String,
     @SerializedName("rating_count")
     val ratingCount: String?,
-    @SerializedName("runtime")
-    val runtime: Int,
     @SerializedName("start_date")
     val startDate: String,
     @SerializedName("status")

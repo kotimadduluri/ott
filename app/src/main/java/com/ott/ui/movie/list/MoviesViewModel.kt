@@ -39,14 +39,9 @@ class MoviesViewModel(
     }
 
     fun getMovies(page: Int) {
-        emitData(UiState.Loading)
         viewModelScope.launch {
-            val response = moviesUseCase(page)
-            when (response) {
-                is Resource.Loading -> {
-                    emitData(UiState.Loading)
-                }
-
+            emitData(UiState.Loading)
+            when (val response = moviesUseCase(page)) {
                 is Resource.Error -> {
                     emitData(UiState.Error(response.message))
                 }
