@@ -1,4 +1,4 @@
-package com.ott.model.movie.data.remote.model
+package com.ott.data.movie.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 

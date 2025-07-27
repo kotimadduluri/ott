@@ -1,7 +1,7 @@
-package com.ott.model.movie
+package com.ott.data.movie
 
-import com.ott.model.movie.data.remote.model.MovieDetailsResponse
-import com.ott.model.movie.data.remote.model.MoviesResponse
+import com.ott.data.movie.data.remote.model.MovieDetailsResponse
+import com.ott.data.movie.data.remote.model.MoviesResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

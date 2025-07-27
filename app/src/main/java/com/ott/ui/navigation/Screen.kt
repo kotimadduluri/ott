@@ -1,9 +1,9 @@
-package com.ott.ui
+package com.ott.ui.navigation
 
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
-sealed interface Screen : NavKey{
+sealed interface Screen : NavKey {
     @Serializable
     data object MovieList : Screen
     @Serializable

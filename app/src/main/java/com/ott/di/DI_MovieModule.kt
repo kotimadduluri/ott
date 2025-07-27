@@ -1,14 +1,14 @@
 package com.ott.di
 
-import com.ott.model.movie.MovieApi
-import com.ott.model.movie.usecase.GetMovieDetailsUseCase
-import com.ott.model.movie.usecase.GetMoviesUseCase
-import com.ott.model.movie.repository.MovieRepository
-import com.ott.model.movie.repository.MovieRepositoryImp
+import com.ott.data.movie.MovieApi
+import com.ott.data.movie.usecase.GetMovieDetailsUseCase
+import com.ott.data.movie.usecase.GetMoviesUseCase
+import com.ott.data.movie.repository.MovieRepository
+import com.ott.data.movie.repository.MovieRepositoryImp
 import com.ott.network.client.NetworkClient
-import com.ott.ui.viewmodel.NavigationViewModel
-import com.ott.ui.viewmodel.movie.MovieDetailsScreenViewModel
-import com.ott.ui.viewmodel.movie.MoviesScreenViewModel
+import com.ott.ui.navigation.NavigationViewModel
+import com.ott.ui.movie.details.MovieDetailsViewModel
+import com.ott.ui.movie.list.MoviesViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -24,7 +24,7 @@ val DI_MovieModule = module {
 
     singleOf(::GetMoviesUseCase)
     singleOf(::GetMovieDetailsUseCase)
-    viewModelOf(::MoviesScreenViewModel)
-    viewModelOf(::MovieDetailsScreenViewModel)
+    viewModelOf(::MoviesViewModel)
+    viewModelOf(::MovieDetailsViewModel)
     viewModelOf(::NavigationViewModel)
 }

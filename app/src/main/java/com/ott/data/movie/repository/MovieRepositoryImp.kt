@@ -1,15 +1,17 @@
-package com.ott.model.movie.repository
+package com.ott.data.movie.repository
 
-import com.ott.model.Resource
-import com.ott.model.movie.MovieApi
+import com.ott.data.Resource
+import com.ott.data.movie.MovieApi
 import com.ott.core_ui.util.UiText
+import com.ott.data.movie.data.remote.model.MovieDetailsResponse
+import com.ott.data.movie.data.remote.model.MoviesResponse
 import com.ott.network.reader.NetworkReader
 
 class MovieRepositoryImp(
     private val movieApi: MovieApi,
     private val networkReader: NetworkReader
 ) : MovieRepository {
-    override suspend fun getMovies(page: Int): Resource {
+    override suspend fun getMovies(page: Int): Resource<MoviesResponse> {
         return try {
             if (networkReader.isInternetAvailable()) {
                 val response = movieApi.getMovies(page)
@@ -20,7 +22,7 @@ class MovieRepositoryImp(
         }
     }
 
-    override suspend fun getMoviesDetails(movieId: Int): Resource {
+    override suspend fun getMoviesDetails(movieId: Int): Resource<MovieDetailsResponse> {
         return try {
             if (networkReader.isInternetAvailable()) {
                 Resource.Success(movieApi.getMovieDetails(movieId))

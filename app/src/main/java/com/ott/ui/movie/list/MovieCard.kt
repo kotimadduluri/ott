@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.ott.core_ui.component.card.MovieCard
 import com.ott.core_ui.util.UiText
-import com.ott.model.movie.data.domain.model.Movie
-import com.ott.model.movie.getFakeMovies
+import com.ott.data.movie.data.domain.model.Movie
+import com.ott.data.movie.getFakeMovies
 
 @Composable
 fun MovieCard(

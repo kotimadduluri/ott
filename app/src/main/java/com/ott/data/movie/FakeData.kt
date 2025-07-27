@@ -1,6 +1,6 @@
-package com.ott.model.movie
+package com.ott.data.movie
 
-import com.ott.model.movie.data.domain.model.Movie
+import com.ott.data.movie.data.domain.model.Movie
 
 private val movieTemp = Movie(
     id = 29560,

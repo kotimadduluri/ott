@@ -1,33 +1,17 @@
 package com.ott.ui
 
-import androidx.compose.runtime.Composable
 import com.ott.core_ui.util.UiText
 
-sealed class UiState {
-    data object None : UiState()
-    data object Loading : UiState()
-    data class Success<T>(val data: T) : UiState()
-    data class Error(val message: UiText) : UiState()
-    data class MultipleError<T>(val errors: List<UiText?>) : UiState(){
-
-        @Composable
-        fun getErrorMessage():UiText{
-            val stringBuilder = StringBuilder()
-            errors.forEach {error->
-                error?.let {
-                    stringBuilder.append(it.asString())
-                    stringBuilder.append("\n")
-                }
-            }
-            return UiText.PlainString(stringBuilder.toString())
-        }
-    }
-
-
-    fun <T> asSuccess() : Success<T> {
-        return this as Success<T>
-    }
-    fun asError() : Error {
-        return this as Error
-    }
+sealed class UiState<out T> {
+    object None : UiState<Nothing>()
+    object Loading : UiState<Nothing>()
+    data class Success<out T>(val data: T) : UiState<T>()
+    data class Error(val message: UiText) : UiState<Nothing>()
+    data class MultipleError(val errors: List<UiText?>) : UiState<Nothing>()
 }
+
+
+// Type-safe accessors
+fun <T> UiState<T>.asSuccessOrNull(): UiState.Success<T>? = this as? UiState.Success<T>
+fun UiState<*>.asErrorOrNull(): UiState.Error? = this as? UiState.Error
+fun UiState<*>.asMultipleErrorOrNull(): UiState.MultipleError? = this as? UiState.MultipleError

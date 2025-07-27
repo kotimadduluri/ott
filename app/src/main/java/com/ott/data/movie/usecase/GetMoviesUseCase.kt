@@ -1,7 +1,8 @@
-package com.ott.model.movie.usecase
+package com.ott.data.movie.usecase
 
-import com.ott.model.Resource
-import com.ott.model.movie.repository.MovieRepository
+import com.ott.data.Resource
+import com.ott.data.movie.data.remote.model.MoviesResponse
+import com.ott.data.movie.repository.MovieRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -9,7 +10,7 @@ class GetMoviesUseCase : KoinComponent {
     private val repository : MovieRepository by inject()
     suspend operator fun invoke(
         page:Int
-    ): Resource {
+    ): Resource<MoviesResponse> {
         return repository.getMovies(page)
     }
 }

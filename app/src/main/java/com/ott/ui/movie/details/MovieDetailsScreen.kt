@@ -1,15 +1,13 @@
 package com.ott.ui.movie.details
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -17,46 +15,42 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ott.core_ui.component.state.ActionStateView
 import com.ott.core_ui.component.AppContainer
 import com.ott.core_ui.component.actionbar.DefaultNavigationIcon
 import com.ott.core_ui.component.button.ButtonWithProgressBar
 import com.ott.core_ui.component.slider.ImageSlider
 import com.ott.core_ui.component.state.ActionState
+import com.ott.core_ui.component.state.ActionStateView
 import com.ott.core_ui.component.state.ActionStateViewCard
 import com.ott.core_ui.component.text.Body
 import com.ott.core_ui.component.text.Title
 import com.ott.core_ui.theme.OttTheme
 import com.ott.core_ui.util.UiText
-import com.ott.model.movie.data.domain.model.Movie
+import com.ott.data.movie.data.domain.model.Movie
 import com.ott.ui.UiState
-import com.ott.ui.viewmodel.movie.MovieDetailsScreenIntent
-import com.ott.ui.viewmodel.movie.MovieDetailsScreenViewModel
+import com.ott.util.orDefault
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailsScreen(
-    viewModel: MovieDetailsScreenViewModel = koinViewModel(),
+    viewModel: MovieDetailsViewModel = koinViewModel(),
     exit: () -> Unit
 ) {
 
-    val uiState = viewModel.uiState().collectAsStateWithLifecycle()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val state = uiState.value
 
-    val isFavourite = remember {
-        mutableStateOf(false)
-    }
+    val isFavourite = viewModel.isFavourite.collectAsStateWithLifecycle()
 
     AppContainer(
         navigation = {
             DefaultNavigationIcon {
-                exit.invoke()
+                exit()
             }
         },
         toolbarActions = {
@@ -64,7 +58,9 @@ fun MovieDetailsScreen(
                 imageVector = if (isFavourite.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                 contentDescription = if (isFavourite.value) "Remove from favorites" else "Add to favorites",
                 tint = if (isFavourite.value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.clickable { isFavourite.value = !isFavourite.value }
+                modifier = Modifier.clickable {
+                    viewModel.onAction(MovieDetailsIntent.Favourite)
+                }
             )
         }
     ) {
@@ -75,27 +71,16 @@ fun MovieDetailsScreen(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            when (uiState.value) {
-                is UiState.Loading -> {
-                    ActionStateViewCard(
-                        action = ActionState.LOADING()
-                    )
-                }
+            when (state) {
+                is UiState.Loading -> ActionStateViewCard(ActionState.LOADING())
 
-                is UiState.Success<*> -> {
-                    val response = (uiState.value as UiState.Success<Movie>).data
-                    MovieDetailsSection(response)
-                }
+                is UiState.Success -> MovieDetailsSection(state.data)
 
-                is UiState.Error -> {
-                    ActionStateView(
-                        action = ActionState.ERROR(
-                            message = (uiState.value as UiState.Error).message,
-                        ),
-                        isActionRequired = true
-                    ) {
-                        viewModel.onAction(MovieDetailsScreenIntent.Refresh)
-                    }
+                is UiState.Error -> ActionStateView(
+                    action = ActionState.ERROR(message = state.message),
+                    isActionRequired = true
+                ) {
+                    viewModel.onAction(MovieDetailsIntent.Refresh)
                 }
 
                 else -> {}
@@ -106,30 +91,28 @@ fun MovieDetailsScreen(
 
 @Composable
 fun MovieDetailsSection(movie: Movie) {
-    val scrollState: ScrollState = rememberScrollState(0)
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth()
-    ) {
-        with(movie) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .verticalScroll(state = scrollState),
-                verticalArrangement = Arrangement.spacedBy(OttTheme.Dimens.sm)
-            ) {
-                //image gallery
-                pictures?.let {
+    with(movie) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(OttTheme.Dimens.sm)
+        ) {
+            //image gallery
+            pictures?.let {
+                item {
                     ImageSlider(it)
                 }
+            }
 
+            item {
                 Title(
                     text = UiText.PlainString(name),
                     textStyle = MaterialTheme.typography.titleLarge,
                     fontColor = MaterialTheme.colorScheme.onBackground
                 )
+            }
 
+            item {
                 Row {
                     Body(
                         text = UiText.PlainString("Rating : $rating ($ratingCount) | "),
@@ -141,7 +124,9 @@ fun MovieDetailsSection(movie: Movie) {
                         textStyle = MaterialTheme.typography.labelSmall,
                     )
                 }
+            }
 
+            item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(OttTheme.Dimens.sm),
@@ -158,10 +143,12 @@ fun MovieDetailsSection(movie: Movie) {
                         )
                     )
                 }
-
-                Body(text = UiText.PlainString(description ?: "No description available"))
-
             }
+
+            item {
+                Body(text = UiText.PlainString(description.orDefault("No description available")))
+            }
+
         }
     }
 }

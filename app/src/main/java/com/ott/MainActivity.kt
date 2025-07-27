@@ -16,11 +16,11 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
-import com.moviemax.view.movie.list.MoviesScreen
+import com.ott.ui.movie.list.MoviesScreen
 import com.ott.core_ui.theme.OttTheme
-import com.ott.ui.Screen
+import com.ott.ui.navigation.Screen
 import com.ott.ui.movie.details.MovieDetailsScreen
-import com.ott.ui.viewmodel.NavigationViewModel
+import com.ott.ui.navigation.NavigationViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

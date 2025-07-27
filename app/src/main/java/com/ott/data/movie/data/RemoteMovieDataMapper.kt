@@ -1,10 +1,10 @@
-package com.moviemax.model.movie.data
+package com.ott.data.movie.data
 
-import com.ott.model.movie.data.domain.model.MovieEpisode
-import com.ott.model.movie.data.domain.model.Movie
-import com.ott.model.movie.data.remote.model.Episode
-import com.ott.model.movie.data.remote.model.MoviesResponse
-import com.ott.model.movie.data.remote.model.TvShow
+import com.ott.data.movie.data.domain.model.MovieEpisode
+import com.ott.data.movie.data.domain.model.Movie
+import com.ott.data.movie.data.remote.model.Episode
+import com.ott.data.movie.data.remote.model.MoviesResponse
+import com.ott.data.movie.data.remote.model.TvShow
 
 // mapper to map with ui objects from remote source
 internal fun MoviesResponse.getMovies(): List<Movie> {
