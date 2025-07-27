@@ -1,20 +1,27 @@
 package com.ott.data.movie.usecase
 
 import android.accounts.NetworkErrorException
+import com.ott.CoroutineTestRule
 import com.ott.core_ui.util.UiText
 import com.ott.data.Resource
 import com.ott.data.movie.repository.MovieRepository
 import com.ott.support.Fixtures
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 
 class GetMovieDetailsUseCaseTest {
 
+
+    @get:Rule
+    val rule: TestRule = CoroutineTestRule()
     private val repository: MovieRepository = mockk()
     private lateinit var useCase: GetMovieDetailsUseCase
 
