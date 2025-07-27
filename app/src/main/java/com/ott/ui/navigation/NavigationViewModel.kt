@@ -11,6 +11,6 @@ class NavigationViewModel : ViewModel() {
     }
 
     fun navigateBack() {
-        backStack.removeLastOrNull()
+        if (backStack.size > 1) backStack.removeLastOrNull()
     }
 }
