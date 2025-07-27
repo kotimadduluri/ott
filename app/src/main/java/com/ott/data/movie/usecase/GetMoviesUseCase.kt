@@ -6,8 +6,7 @@ import com.ott.data.movie.repository.MovieRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class GetMoviesUseCase : KoinComponent {
-    private val repository: MovieRepository by inject()
+class GetMoviesUseCase(val repository: MovieRepository) : KoinComponent {
     suspend operator fun invoke(page: Int): Resource<MoviesResponse> {
         return repository.getMovies(page)
     }

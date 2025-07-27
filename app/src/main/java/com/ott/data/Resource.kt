@@ -15,11 +15,3 @@ sealed class Resource<out T> {
     ) : Resource<Nothing>()
 
 }
-
-fun <T> Resource<T>.asSuccess(): Resource.Success<T> {
-    return this as Resource.Success<T>
-}
-
-fun <T> Resource<T>.asError(): Resource.Error {
-    return this as Resource.Error
-}
